@@ -24,7 +24,7 @@ jobs:
 
       - name: import
         run: |
-          install-module PSDepend -scope currentuser
+          install-module PSDepend -scope currentuser -force
           Get-Dependency -Path .\depend.psd1|Install-Dependency
       # Runs a set of commands using the runners shell
       # - name: psake
