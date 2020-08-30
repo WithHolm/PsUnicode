@@ -30,7 +30,8 @@ jobs:
       - name: build
         run: |
           ipmo psake
-          
+          invoke-psake updateSource
+
       # Runs a set of commands using the runners shell
       # - name: psake
       #   run: |
