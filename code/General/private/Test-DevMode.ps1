@@ -1,5 +1,6 @@
 function Test-DevMode {
     [CmdletBinding()]
+    [outputtype([bool])]
     param (
     )
     

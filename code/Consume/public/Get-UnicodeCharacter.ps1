@@ -1,3 +1,7 @@
+. (join-path $script:ModulePath '.\code\Process\class\unicode.class.ps1')
+. (join-path $script:ModulePath '.\code\Process\class\pva.class.ps1')
+
+
 function Get-UnicodeCharacter
 {
     [CmdletBinding(DefaultParameterSetName = "string")]
@@ -10,9 +14,7 @@ function Get-UnicodeCharacter
     )
     
     begin
-    {
-        
-    }
+    {}
     process
     {
         $ProcessList = @()

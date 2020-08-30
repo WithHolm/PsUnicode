@@ -1,3 +1,5 @@
+. (join-path $script:ModulePath 'code\import\class\UnicodeDataTypeVersion.ps1')
+
 <#
 .SYNOPSIS
 Get versions of all downloaded datafiles
@@ -24,7 +26,12 @@ function Get-UnicodeVersion {
         #Get online Version. used for all types
         if(!$OnlyLocal)
         {
-            $readme = Invoke-RestMethod -Method get -Uri $Uri
+            try{
+                $readme = Invoke-RestMethod -Uri $Uri -TimeoutSec 4
+            }
+            catch{
+                throw "Could not contact unicode.org within the given timeframe"
+            }
             $OnlineDate = $readme.split("`n")|?{$_ -match "# Date: (?'date'[0-9]{4}-[0-9]{2}-[0-9]{2})"}|%{$Matches['date']}
         }
         else

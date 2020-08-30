@@ -12,7 +12,7 @@
 RootModule = 'Unicode.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.3.2008'
+ModuleVersion = '0.2008.1'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -57,9 +57,7 @@ Description = 'Gets information on unicode characters'
 # RequiredAssemblies = @()
 
 # Script files (.ps1) that are run in the caller's environment prior to importing this module.
-ScriptsToProcess = 'code\Import\private\DataTypeVersion.class.ps1', 
-               'code\Process\public\pva.class.ps1', 
-               'code\Process\public\unicode.class.ps1'
+# ScriptsToProcess = @()
 
 # Type files (.ps1xml) to be loaded when importing this module
 # TypesToProcess = @()
@@ -86,9 +84,7 @@ AliasesToExport = '*'
 # DscResourcesToExport = @()
 
 # List of all modules packaged with this module
-ModuleList = @('DataTypeVersion.class', 
-               'pva.class', 
-               'unicode.class')
+# ModuleList = @()
 
 # List of all files packaged with this module
 # FileList = @()

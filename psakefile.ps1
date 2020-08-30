@@ -2,10 +2,12 @@ Properties{
     $SourceFolder = [System.IO.DirectoryInfo](join-path $psake.build_script_dir "Source")
     $ModuleName = gci $psake.build_script_dir '*.psm1'|select -ExpandProperty basename
     $Date = [datetime]::Now
-    $Version = [version]"0.3.$($Date.ToString("yyMM"))"
+    $Version = [version]"0.$($Date.ToString("yyMM")).1"
 }
 
-task default -depends CreateManifest,DownloadSource,test
+task default -depends CreateManifest,test
+
+task updateSource -depends DownloadSource,test
 #DownloadSource,Test,
 
 task test{
@@ -40,17 +42,16 @@ task CreateManifest{
         CompanyName = 'Witholm'
         Copyright = '(c) Philip Meholm/Withholm. All rights reserved.'
         Description = 'Gets information on unicode characters'
-        ScriptsToProcess = $ClassFiles|%{$_.FullName.Replace($psake.build_script_dir,"")}|%{$_.substring(1)}
+        # ScriptsToProcess = $ClassFiles|%{$_.FullName.Replace($psake.build_script_dir,"")}|%{$_.substring(1)}
         RootModule = "$ModuleName.psm1"
         ModuleVersion = $Version
         FunctionsToExport = $ExportCmdlets
-        ModuleList = $ClassFiles.BaseName
+        # ModuleList = $ClassFiles.BaseName
     }
     Write-host "exporting to '$($param.path)'"
     New-ModuleManifest @param
 
     Write-host "Testing import of module '$ModuleName'"
-    $CurrentModules = get-module
     ipmo $($param.path) -Force -ErrorAction Stop
     $module = get-module $ModuleName
     if($module)
@@ -66,13 +67,17 @@ task CreateManifest{
 
     if($module|Get-Module)
     {
-        
+        Throw "Main module not unloaded"
     }
-    if((get-module).count -ne $CurrentModules.count)
+    if($module.ModuleList)
     {
-        throw "Module did not remove cleanly (before $($CurrentModules.count), after $((get-module).count))"
-    }
-    else {
-        Write-host "Module '$modulename' unloaded cleanly"
+        foreach($mod in $module.ModuleList)
+        {
+            get-module
+            if(get-module $mod.name)
+            {
+                Throw "Did not unload sub module '$($mod.name)'"
+            }
+        }
     }
 }
