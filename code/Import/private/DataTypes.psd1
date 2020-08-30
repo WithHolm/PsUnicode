@@ -1,0 +1,6 @@
+@{
+    dataTypes = @(
+        'UnicodeData',
+        'PropertyValueAliases'
+    )
+}
